@@ -27,6 +27,19 @@
             var uiGridCtrl = controllers[0];
             var renderContainerCtrl = controllers[1];
 
+            $scope.onFocus = function (event) {
+              var text = event.target.children[0].innerHTML;
+
+              var ariaNotifier = document.getElementById(uiGridCtrl.grid.id + '-aria-speakable');
+              if (ariaNotifier) {
+                var columnName = document.createTextNode(text);
+                ariaNotifier.innerHTML = '';
+                ariaNotifier.appendChild(columnName);
+                ariaNotifier.style.display = 'none';
+                ariaNotifier.style.display = 'inline';
+              }
+            };
+
             $scope.i18n = {
               headerCell: i18nService.getSafeText('headerCell'),
               sort: i18nService.getSafeText('sort')
