@@ -1884,6 +1884,10 @@ angular.module('ui.grid')
     }
   };
 
+  function getAppendedColumnHeaderText(col) {
+    return ' + \' ' + i18nService.getSafeText('headerCell.aria.column') + ' ' + col.displayName + '\'';
+  }
+
   /**
    * @ngdoc function
    * @name getCellDisplayValue
@@ -1897,12 +1901,12 @@ angular.module('ui.grid')
       var custom_filter = col.cellFilter ? " | " + col.cellFilter : "";
 
       if (typeof(row.entity['$$' + col.uid]) !== 'undefined') {
-        col.cellDisplayGetterCache = $parse(row.entity['$$' + col.uid].rendered + custom_filter);
+        col.cellDisplayGetterCache = $parse(row.entity['$$' + col.uid].rendered + custom_filter + getAppendedColumnHeaderText(col));
       } else if (this.options.flatEntityAccess && typeof(col.field) !== 'undefined') {
         var colField = col.field.replace(/(')|(\\)/g, "\\$&");
-        col.cellDisplayGetterCache = $parse('entity[\'' + colField + '\']' + custom_filter);
+        col.cellDisplayGetterCache = $parse('entity[\'' + colField + '\']' + custom_filter + getAppendedColumnHeaderText(col));
       } else {
-        col.cellDisplayGetterCache = $parse(row.getEntityQualifiedColField(col) + custom_filter);
+        col.cellDisplayGetterCache = $parse(row.getEntityQualifiedColField(col) + custom_filter + getAppendedColumnHeaderText(col));
       }
     }
 
